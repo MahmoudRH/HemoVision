@@ -6,6 +6,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,26 +40,30 @@ fun AddNewTestScreen(navigateBack: () -> Unit) {
         rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia()) { uri ->
             selectedImageUri = uri
         }
-    Column {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
         TopAppBar(navigationIcon = {
             IconButton(onClick = navigateBack) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "back"
+                    imageVector = Icons.Default.ArrowBack, contentDescription = "back"
                 )
             }
 
         }, title = {
             Text(
-                text = "Make a new test",
-                style = TextStyle(
-                    color = MaterialTheme.colorScheme.tertiary,
+                text = "Make a new test", style = TextStyle(
+                    color = MaterialTheme.colorScheme.primary,
                     fontFamily = quicksandFamily,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 22.sp
                 )
             )
-        })
+        }, colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(6.dp),
+        ))
         var tempState by remember { mutableStateOf("") }
         OutlinedTextField(
             value = tempState,
@@ -102,7 +107,11 @@ fun AddNewTestScreen(navigateBack: () -> Unit) {
                     .padding(16.dp)
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(8.dp))
-                    .border(0.5.dp,shape =  RoundedCornerShape(8.dp), color = MaterialTheme.colorScheme.tertiary),
+                    .border(
+                        0.65.dp,
+                        shape = RoundedCornerShape(8.dp),
+                        color = MaterialTheme.colorScheme.onSurface
+                    ),
                 contentScale = ContentScale.Fit
             )
 

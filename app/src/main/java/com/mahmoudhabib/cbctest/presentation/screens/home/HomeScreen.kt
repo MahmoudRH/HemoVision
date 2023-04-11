@@ -36,7 +36,7 @@ fun HomeScreen(
                     Text(
                         text = "Welcome To CBC",
                         style = TextStyle(
-                            color = MaterialTheme.colorScheme.tertiary,
+                            color = MaterialTheme.colorScheme.primary,
                             fontFamily = quicksandFamily,
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 24.sp
@@ -44,8 +44,7 @@ fun HomeScreen(
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.1f)
-                        .compositeOver(MaterialTheme.colorScheme.background),
+                    containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(6.dp),
                 ),
                 actions = {
                     IconButton(onClick = navigateToSearchScreen) {
@@ -58,7 +57,6 @@ fun HomeScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = navigateToAddNewTestScreen,
-                contentColor = MaterialTheme.colorScheme.tertiary,
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "New Test")
             }
@@ -69,7 +67,7 @@ fun HomeScreen(
                 Text(
                     text = "History",
                     style = TextStyle(
-                        color = MaterialTheme.colorScheme.tertiary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontFamily = quicksandFamily,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 28.sp

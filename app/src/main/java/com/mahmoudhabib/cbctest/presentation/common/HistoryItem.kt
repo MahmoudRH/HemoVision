@@ -28,6 +28,7 @@ fun HistoryItem(
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 12.dp)
             .fillMaxWidth(),
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceColorAtElevation(12.dp)),
         onClick = onClickHistoryItem,
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
@@ -37,7 +38,7 @@ fun HistoryItem(
             Text(
                 text = item.title,
                 style = TextStyle(
-                    color = MaterialTheme.colorScheme.tertiary,
+                    color = MaterialTheme.colorScheme.primary,
                     fontFamily = quicksandFamily,
                     fontWeight = FontWeight.Normal,
                     fontSize = 22.sp
@@ -59,7 +60,7 @@ fun HistoryItem(
             Text(
                 text = SimpleDateFormat("MMM dd", Locale.getDefault()).format(item.date),
                 style = TextStyle(
-                    color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.67f),
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.67f),
                     fontFamily = quicksandFamily,
                     fontWeight = FontWeight.Light,
                     fontSize = 18.sp
@@ -76,7 +77,7 @@ private fun CustomChip(key: String, value: Float) {
     Text(
         text = "$key: ${DecimalFormat().apply { maximumFractionDigits = 2 }.format(value)}",
         fontFamily = quicksandFamily,
-        color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.87f),
+        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.87f),
         modifier = Modifier
             .clip(CircleShape)
             .background(MaterialTheme.colorScheme.background)

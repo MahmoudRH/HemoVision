@@ -14,7 +14,7 @@ import androidx.core.view.ViewCompat
 
 private val DarkColorScheme = darkColorScheme(
     primary = primaryDark,
-    primaryContainer = secondaryDark,
+    primaryContainer = primaryContainerDark,
     surface = backgroundDark,
     tertiary = tertiaryDark,
     background = backgroundDark,
@@ -23,7 +23,7 @@ private val DarkColorScheme = darkColorScheme(
 
 private val LightColorScheme = lightColorScheme(
     primary = primary,
-    primaryContainer = secondary,
+    primaryContainer = primaryContainer,
     surface = background,
     tertiary = tertiary,
     background = background,
@@ -34,7 +34,7 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun CBCTestTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

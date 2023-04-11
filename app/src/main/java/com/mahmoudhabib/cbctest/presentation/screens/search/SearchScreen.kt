@@ -50,16 +50,9 @@ fun SearchScreen(
             searchWord = viewModel.searchWord,
             onSearch = { viewModel.search() }
         )
-        Box(Modifier.background(MaterialTheme.colorScheme.background)) {
+        Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
             LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentPadding = PaddingValues(
-                    start = 20.dp,
-                    end = 10.dp,
-                    top = 10.dp,
-                    bottom = 10.dp
-                )
+                contentPadding = PaddingValues(vertical = 10.dp)
             ) {
                 items(viewModel.resultsList, key = { it.id }) {
                     HistoryItem(it) { navigateToTestDetails(it.id) }
@@ -101,8 +94,7 @@ private fun SearchTopBar(
             }
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.1f)
-                .compositeOver(MaterialTheme.colorScheme.background),
+            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(6.dp),
         ),
         navigationIcon = {
             IconButton(onClick = onNavigateBack) {
@@ -154,27 +146,6 @@ private fun SearchTextField(
             ) {
                 Text(text = hint, color = Color.Gray, fontSize = 18.sp)
             }
-            /*  if (searchWord.value.isNotEmpty()) {
-                  Box(
-                      modifier = Modifier.fillMaxSize(),
-                      contentAlignment = Alignment.CenterStart
-                  ) {
-                      IconButton(
-                          modifier = Modifier.align(Alignment.CenterEnd),
-                          onClick = {
-                              searchWord.value = " "
-                              // I Had to put the space and trim it in the view model to avoid crash caused by
-                              // BasicTextField (https://issuetracker.google.com/issues/229378536)
-                          }
-                      ) {
-                          Icon(
-                              imageVector = Icons.Default.Cancel,
-                              contentDescription = "Clear"
-                          )
-                      }
-                      innerTextField()
-                  }
-              } else*/
             innerTextField()
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
