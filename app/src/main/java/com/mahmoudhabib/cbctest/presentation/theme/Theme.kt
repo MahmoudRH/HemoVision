@@ -34,7 +34,7 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun CBCTestTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false,
+    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
