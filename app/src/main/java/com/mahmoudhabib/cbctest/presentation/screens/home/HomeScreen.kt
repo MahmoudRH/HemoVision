@@ -4,17 +4,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mahmoudhabib.cbctest.presentation.MainActivity
 import com.mahmoudhabib.cbctest.presentation.common.HistoryItem
 import com.mahmoudhabib.cbctest.presentation.common.EmptyListScreen
 import com.mahmoudhabib.cbctest.presentation.common.LoadingScreen
@@ -49,6 +48,16 @@ fun HomeScreen(
                 actions = {
                     IconButton(onClick = navigateToSearchScreen) {
                         Icon(Icons.Default.Search, contentDescription = null)
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        MainActivity.isDarkTheme.value = !MainActivity.isDarkTheme.value!!
+                    }) {
+                        Icon(
+                            if (MainActivity.isDarkTheme.value!!) Icons.Default.LightMode else Icons.Default.DarkMode,
+                            contentDescription = null
+                        )
                     }
                 }
             )
