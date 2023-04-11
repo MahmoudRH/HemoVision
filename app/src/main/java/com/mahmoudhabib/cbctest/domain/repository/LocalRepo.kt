@@ -9,7 +9,7 @@ interface LocalRepo {
 
     fun searchHistory(searchWord: String): Flow<List<TestResult>>
 
-    suspend fun getTestDetails(testId: Int): TestResult
+    suspend fun getTestDetails(testId: Int): TestResult?
 
     suspend fun saveNewTestResult(testResult: TestResult)
 

@@ -14,7 +14,7 @@ class LocalRepoImpl(private val dao: HistoryDao) : LocalRepo {
         return dao.searchHistory(searchWord)
     }
 
-    override suspend fun getTestDetails(testId: Int): TestResult {
+    override suspend fun getTestDetails(testId: Int): TestResult? {
         return dao.getTestDetails(testId)
     }
 

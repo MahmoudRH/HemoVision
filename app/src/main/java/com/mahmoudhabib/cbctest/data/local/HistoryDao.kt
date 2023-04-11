@@ -16,8 +16,8 @@ interface HistoryDao {
     @Delete
     suspend fun deleteTestResult(testResult: TestResult)
 
-    @Query("SELECT * FROM testResults WHERE id = :testId LIMIT 1")
-    suspend fun getTestDetails(testId: Int): TestResult
+    @Query("SELECT * FROM testResults WHERE id = :testId")
+    suspend fun getTestDetails(testId: Int): TestResult?
 
     @Query("SELECT * FROM testResults")
     fun getAllTestResults(): Flow<List<TestResult>>

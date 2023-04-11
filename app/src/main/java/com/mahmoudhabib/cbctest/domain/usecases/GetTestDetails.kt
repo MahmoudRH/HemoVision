@@ -4,7 +4,7 @@ import com.mahmoudhabib.cbctest.domain.model.TestResult
 import com.mahmoudhabib.cbctest.domain.repository.LocalRepo
 
 class GetTestDetails(private val repo: LocalRepo) {
-    suspend operator fun invoke(testId:Int): TestResult {
+    suspend operator fun invoke(testId:Int): TestResult? {
         return repo.getTestDetails(testId)
     }
 }

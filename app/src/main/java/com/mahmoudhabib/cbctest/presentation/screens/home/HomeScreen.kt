@@ -39,7 +39,7 @@ fun HomeScreen(
                             color = MaterialTheme.colorScheme.tertiary,
                             fontFamily = quicksandFamily,
                             fontWeight = FontWeight.SemiBold,
-                            fontSize = 28.sp
+                            fontSize = 24.sp
                         ),
                     )
                 },
