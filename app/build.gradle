@@ -46,6 +46,9 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    aaptOptions {
+        noCompress "tflite"
+    }
 }
 
 dependencies {
@@ -55,8 +58,16 @@ dependencies {
     //-> Coil library
     implementation("io.coil-kt:coil-compose:2.3.0")
 
+    //-> TensorFlow Lite library
+//    implementation 'org.tensorflow:tensorflow-lite:2.12.0'
+
     //-> RoomDB
     implementation "androidx.room:room-runtime:$room_version"
+    implementation 'org.tensorflow:tensorflow-lite:2.12.0'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.9.0'
+    implementation 'org.tensorflow:tensorflow-lite-support:0.1.0'
+    implementation 'com.google.mlkit:object-detection-common:18.0.0'
+    implementation 'com.google.mlkit:object-detection:17.0.0'
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
 
