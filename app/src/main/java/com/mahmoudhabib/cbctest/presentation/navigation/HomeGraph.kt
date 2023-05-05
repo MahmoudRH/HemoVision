@@ -39,7 +39,11 @@ fun NavGraphBuilder.homeGraph(navController: NavController) {
         }
         composable(HomeScreenDestination.Add.route) {
             AddNewTestScreen(
-                navigateBack = { navController.popBackStack() }
+                navigateBack = { navController.popBackStack() },
+                navigateToTestDetails = { testId->
+                    navController.popBackStack()
+                    navController.navigate(HomeScreenDestination.TestDetails.createRoute(testId))
+                }
             )
         }
         composable(HomeScreenDestination.Search.route) {

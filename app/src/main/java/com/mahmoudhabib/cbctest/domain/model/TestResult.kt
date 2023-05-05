@@ -1,5 +1,6 @@
 package com.mahmoudhabib.cbctest.domain.model
 
+import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -9,8 +10,11 @@ import kotlin.random.Random
 data class TestResult(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Int = 0,
     @ColumnInfo(name = "title") val title: String,
-    @ColumnInfo(name = "redBloodCells") val redBloodCells: Float = Random.nextFloat() * 100,
-    @ColumnInfo(name = "whiteBloodCells") val whiteBloodCells: Float = Random.nextFloat() * 100,
-    @ColumnInfo(name = "platelets") val platelets: Float = Random.nextFloat() * 100,
+    @ColumnInfo(name = "redBloodCells") val redBloodCells: Int ,
+    @ColumnInfo(name = "whiteBloodCells") val whiteBloodCells: Int ,
+    @ColumnInfo(name = "platelets") val platelets: Int ,
     @ColumnInfo(name = "date") val date: Long,
+    @ColumnInfo(name = "originalImagePath") val originalImagePath: String,
+    @ColumnInfo(name = "resultImagePath") val resultImagePath: String,
+
 )

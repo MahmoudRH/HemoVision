@@ -12,14 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun LoadingScreen(visibility: Boolean) {
+fun LoadingScreen(modifier: Modifier = Modifier,visibility: Boolean) {
     AnimatedVisibility(
         visible = visibility,
         enter = fadeIn(),
         exit = fadeOut()
     ) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)

@@ -69,7 +69,7 @@ fun HomeScreen(
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "New Test")
             }
-        }
+        },
     ) { paddingValues ->
         LazyColumn(contentPadding = paddingValues) {
             item {

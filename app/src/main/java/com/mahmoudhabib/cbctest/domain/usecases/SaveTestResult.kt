@@ -5,7 +5,7 @@ import com.mahmoudhabib.cbctest.domain.repository.LocalRepo
 
 class SaveTestResult(private val repo: LocalRepo) {
 
-    suspend operator fun invoke(testResult: TestResult){
-        repo.saveNewTestResult(testResult)
+    suspend operator fun invoke(testResult: TestResult): Long{
+       return repo.saveNewTestResult(testResult)
     }
 }

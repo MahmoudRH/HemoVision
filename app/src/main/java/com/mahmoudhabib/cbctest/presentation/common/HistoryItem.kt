@@ -21,7 +21,7 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryItem(
-    item: TestResult = TestResult(title = "Title", date = 1680963409000),
+    item: TestResult,
     onClickHistoryItem: () -> Unit
 ) {
     Card(
@@ -73,7 +73,7 @@ fun HistoryItem(
 }
 
 @Composable
-private fun CustomChip(key: String, value: Float) {
+private fun CustomChip(key: String, value: Int) {
     Text(
         text = "$key: ${DecimalFormat().apply { maximumFractionDigits = 2 }.format(value)}",
         fontFamily = quicksandFamily,

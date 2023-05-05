@@ -11,7 +11,7 @@ interface LocalRepo {
 
     suspend fun getTestDetails(testId: Int): TestResult?
 
-    suspend fun saveNewTestResult(testResult: TestResult)
+    suspend fun saveNewTestResult(testResult: TestResult) : Long
 
     suspend fun deleteTestResult(testResult: TestResult)
 
