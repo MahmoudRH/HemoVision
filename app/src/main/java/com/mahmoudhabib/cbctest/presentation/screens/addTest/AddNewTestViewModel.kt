@@ -11,7 +11,6 @@ import android.graphics.Paint
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -72,7 +71,6 @@ class AddNewTestViewModel @Inject constructor(
                                 application.assets,
                                 "best4-float16.tflite",
                                 "CBC.txt",
-                                false,
                                 imageSize
                             )
 
