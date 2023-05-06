@@ -1,31 +1,18 @@
 package com.mahmoudhabib.cbctest.presentation.screens.addTest
 
 import android.app.Application
-import android.content.ContentResolver
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.ImageDecoder
-import android.graphics.Paint
-import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mahmoudhabib.cbctest.data.tflite.Utils
 import com.mahmoudhabib.cbctest.data.tflite.YoloV5Classifier
-import com.mahmoudhabib.cbctest.domain.model.Recognition
 import com.mahmoudhabib.cbctest.domain.model.TestResult
 import com.mahmoudhabib.cbctest.domain.usecases.TestResultsUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
-import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Locale
 import javax.inject.Inject
@@ -44,7 +31,7 @@ class AddNewTestViewModel @Inject constructor(
     fun onEvent(event: AddTestEvent) {
         when (event) {
             is AddTestEvent.SetImageUri -> {
-                val bitmap = getBitmapFromUri(event.uri, application.contentResolver)
+                val bitmap = Utils.getBitmapFromUri(event.uri, application.contentResolver)
                 _addTestState.value = addTestState.value.copy(
                     selectedBitmap = bitmap,
                     showImagePreview = event.uri != null
@@ -80,7 +67,8 @@ class AddNewTestViewModel @Inject constructor(
 
                             //-> Step 3: Run the model on the pre-processed image to get results
                             val modelResults = classifier.recognizeImage(processedBitmap)
-                            val resultBitmap = drawTheDetectedObjects(processedBitmap, modelResults)
+                            val resultBitmap =
+                                Utils.drawTheDetectedObjects(processedBitmap, modelResults)
 
                             //-> Step 4: Save the original image and the result image locally
                             val currentTimeInMillis = System.currentTimeMillis()
@@ -88,13 +76,13 @@ class AddNewTestViewModel @Inject constructor(
                                 SimpleDateFormat("dd-MMM-yyyy_HHmmss", Locale.getDefault()).format(
                                     currentTimeInMillis
                                 )
-                            val originalImagePath = saveBitmapToInternalStorage(
+                            val originalImagePath = Utils.saveBitmapToInternalStorage(
                                 context = application.applicationContext,
                                 bitmap = selectedBitmap,
                                 fileName = "originalImage.jpg",
                                 subdirectoryName = "${title}_$saveDateFormatted"
                             )
-                            val resultImagePath = saveBitmapToInternalStorage(
+                            val resultImagePath = Utils.saveBitmapToInternalStorage(
                                 context = application.applicationContext,
                                 bitmap = Utils.unProcessBitmap(
                                     resultBitmap,
@@ -117,6 +105,7 @@ class AddNewTestViewModel @Inject constructor(
                                     resultImagePath = resultImagePath.toString(),
                                 )
                             )
+
                             _addTestState.value = addTestState.value.copy(
                                 isLoading = false,
                                 rowId = rowId.toInt(),
@@ -128,79 +117,4 @@ class AddNewTestViewModel @Inject constructor(
             }
         }
     }
-
-    private fun getBitmapFromUri(uri: Uri?, contentResolver: ContentResolver): Bitmap? {
-        var bitmap: Bitmap? = null
-        try {
-            uri?.let {
-                bitmap = if (Build.VERSION.SDK_INT < 28) {
-                    MediaStore.Images.Media.getBitmap(contentResolver, it)
-                } else {
-                    val src = ImageDecoder.createSource(contentResolver, it)
-                    ImageDecoder.decodeBitmap(src) { decoder, _, _ ->
-                        decoder.allocator = ImageDecoder.ALLOCATOR_SOFTWARE
-                        decoder.isMutableRequired = true
-                    }
-                }
-
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return bitmap
-    }
-
-    private fun drawTheDetectedObjects(bitmap: Bitmap, results: List<Recognition>): Bitmap {
-        val canvas = Canvas(bitmap)
-        val paint = Paint().apply {
-            style = Paint.Style.STROKE
-            strokeWidth = 2f
-        }
-        val textPaint = Paint().apply {
-            style = Paint.Style.FILL
-            textSize = 15f
-        }
-
-        results.forEach {
-            val color: Int = when (it.title) {
-                "RBC" -> Color.RED
-                "WBC" -> Color.GREEN
-                "Platelets" -> Color.BLUE
-                else -> Color.BLACK
-            }
-            textPaint.color = color
-            paint.color = color
-            canvas.drawText(it.title, it.location.centerX(), it.location.centerY(), textPaint)
-            canvas.drawOval(it.location, paint)
-        }
-        return bitmap
-    }
-
-    private fun saveBitmapToInternalStorage(
-        context: Context,
-        bitmap: Bitmap,
-        fileName: String,
-        subdirectoryName: String,
-    ): Uri {
-        val directory = File(context.filesDir, subdirectoryName)
-        if (!directory.exists()) {
-            directory.mkdir()
-        }
-        val file = File(directory, fileName)
-        val outputStream = FileOutputStream(file)
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-        outputStream.flush()
-        outputStream.close()
-        return Uri.fromFile(file)
-    }
-
 }
-
-/*    private fun getSampleImage(drawable: Int = R.drawable.blood_sample): Bitmap {
-        return BitmapFactory.decodeResource(
-            application.resources,
-            drawable,
-            BitmapFactory.Options().apply {
-                inMutable = true
-            })
-    }*/
