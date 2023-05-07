@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1091125520894",
+    "project_id": "cbc-test-a23e1",
+    "storage_bucket": "cbc-test-a23e1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1091125520894:android:35ee185a826f65215678af",
+        "android_client_info": {
+          "package_name": "com.mahmoudhabib.cbctest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1091125520894-7i5d9hfqqalfvqu8ip122d3qtjtborkk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeax0pa995T_G_IVuFLm-LI3dRlvmFhBM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1091125520894-7i5d9hfqqalfvqu8ip122d3qtjtborkk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

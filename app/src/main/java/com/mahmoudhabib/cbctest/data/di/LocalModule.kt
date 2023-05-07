@@ -2,21 +2,15 @@ package com.mahmoudhabib.cbctest.data.di
 
 import android.app.Application
 import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.mahmoudhabib.cbctest.data.local.HistoryDao
 import com.mahmoudhabib.cbctest.data.local.HistoryDatabase
 import com.mahmoudhabib.cbctest.data.repository.LocalRepoImpl
-import com.mahmoudhabib.cbctest.domain.model.TestResult
 import com.mahmoudhabib.cbctest.domain.repository.LocalRepo
 import com.mahmoudhabib.cbctest.domain.usecases.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Singleton
 
 @Module
@@ -25,7 +19,8 @@ object LocalModule {
     @Provides
     @Singleton
     fun provideDataBase(app: Application): HistoryDatabase {
-        return Room.databaseBuilder(app, HistoryDatabase::class.java, HistoryDatabase.DATABASE_NAME).build()
+        return Room.databaseBuilder(app, HistoryDatabase::class.java, HistoryDatabase.DATABASE_NAME)
+            .fallbackToDestructiveMigration().build()
     }
 
     @Provides

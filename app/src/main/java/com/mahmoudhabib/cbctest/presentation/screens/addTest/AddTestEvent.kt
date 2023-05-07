@@ -1,6 +1,5 @@
 package com.mahmoudhabib.cbctest.presentation.screens.addTest
 
-import android.graphics.Bitmap
 import android.net.Uri
 
 
