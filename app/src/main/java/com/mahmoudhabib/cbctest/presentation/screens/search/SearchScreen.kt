@@ -14,7 +14,6 @@ import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -46,10 +45,15 @@ fun SearchScreen(
             onNavigateBack = navigateBack,
             hint = "Search..",
             focusRequester = focusRequester,
-            searchWord = viewModel.searchWord,
-            onSearch = { viewModel.search() }
+            value = viewModel.searchWord.value,
+            onValueChanged = viewModel::onChangeSearchWord,
+            onClickClear = viewModel::onClearClick,
+            onClickSearch = { viewModel.search() },
         )
-        Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)) {
             LazyColumn(
                 contentPadding = PaddingValues(vertical = 10.dp)
             ) {
@@ -76,21 +80,22 @@ fun SearchScreen(
 @Composable
 private fun SearchTopBar(
     onNavigateBack: () -> Unit = {},
-    searchWord: MutableState<String>,
-    onSearch: () -> Unit = {},
+    value: String,
+    onValueChanged: (String) -> Unit,
+    onClickSearch: () -> Unit = {},
+    onClickClear: () -> Unit = {},
     hint: String,
     focusRequester: FocusRequester,
 ) {
     TopAppBar(
         title = {
             SearchTextField(
-                searchWord = searchWord,
+                value,
+                onValueChanged,
                 hint = hint,
-                focusRequester = focusRequester
-            ) {
-                if (searchWord.value.isNotEmpty())
-                    onSearch()
-            }
+                focusRequester = focusRequester,
+                onSearch = onClickSearch
+            )
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(6.dp),
@@ -102,11 +107,11 @@ private fun SearchTopBar(
         },
         actions = {
             AnimatedVisibility(
-                searchWord.value.trim().isNotEmpty(),
+                value.trim().isNotEmpty(),
                 enter = fadeIn(), exit = fadeOut()
             ) {
                 IconButton(
-                    onClick = { searchWord.value = "" }
+                    onClick = onClickClear
                 ) {
                     Icon(
                         imageVector = Icons.Default.Cancel,
@@ -121,7 +126,8 @@ private fun SearchTopBar(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun SearchTextField(
-    searchWord: MutableState<String>,
+    value: String,
+    onValueChanged: (String) -> Unit,
     hint: String,
     focusRequester: FocusRequester,
     onSearch: () -> Unit = {},
@@ -135,12 +141,12 @@ private fun SearchTextField(
                 if (it.isFocused)
                     keyboardController?.show()
             },
-        value = searchWord.value,
-        onValueChange = { searchWord.value = it },
+        value = value,
+        onValueChange = onValueChanged,
         singleLine = true,
         decorationBox = { innerTextField ->
             AnimatedVisibility(
-                searchWord.value.isEmpty(),
+                value.isEmpty(),
                 enter = fadeIn(), exit = fadeOut()
             ) {
                 Text(text = hint, color = Color.Gray, fontSize = 18.sp)
