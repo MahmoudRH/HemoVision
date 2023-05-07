@@ -18,7 +18,7 @@ class LocalRepoImpl(private val dao: HistoryDao) : LocalRepo {
         return dao.getTestDetails(testId)
     }
 
-    override suspend fun saveNewTestResult(testResult: TestResult) {
+    override suspend fun saveNewTestResult(testResult: TestResult) :Long{
         return dao.insertTestResult(testResult)
     }
 

@@ -25,20 +25,7 @@ object LocalModule {
     @Provides
     @Singleton
     fun provideDataBase(app: Application): HistoryDatabase {
-        return Room.databaseBuilder(app, HistoryDatabase::class.java, HistoryDatabase.DATABASE_NAME)
-            .addCallback(object :RoomDatabase.Callback(){
-                override fun onCreate(db: SupportSQLiteDatabase) {
-                    super.onCreate(db)
-                    val coroutineScope = CoroutineScope(Dispatchers.IO)
-                    coroutineScope.launch {
-                        val dao = provideHistoryDao(provideDataBase(app))
-                        dao.insertTestResult(TestResult(title="first", date = System.currentTimeMillis()))
-                        dao.insertTestResult(TestResult(title="second", date = System.currentTimeMillis()))
-                        dao.insertTestResult(TestResult(title="third", date = System.currentTimeMillis()))
-                    }
-                }
-            })
-            .build()
+        return Room.databaseBuilder(app, HistoryDatabase::class.java, HistoryDatabase.DATABASE_NAME).build()
     }
 
     @Provides

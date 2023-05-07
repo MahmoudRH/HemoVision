@@ -11,11 +11,11 @@ android {
 
     defaultConfig {
         applicationId "com.mahmoudhabib.cbctest"
-        minSdk 24
+        minSdk 25
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
+        ndkVersion = "25.2.9519653"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
@@ -29,11 +29,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     buildFeatures {
         compose true
@@ -46,14 +46,23 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    androidResources {
+        noCompress 'tflite'
+    }
 }
 
 dependencies {
+
     //-> Compose BOM
     implementation platform('androidx.compose:compose-bom:2023.04.00')
 
     //-> Coil library
     implementation("io.coil-kt:coil-compose:2.3.0")
+
+    //-> TensorFlow Lite library
+    implementation 'org.tensorflow:tensorflow-lite:2.12.0'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.9.0'
+
 
     //-> RoomDB
     implementation "androidx.room:room-runtime:$room_version"

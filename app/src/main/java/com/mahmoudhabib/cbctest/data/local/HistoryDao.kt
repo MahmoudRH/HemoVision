@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface HistoryDao {
 
     @Insert
-    suspend fun insertTestResult(testResult: TestResult)
+    suspend fun insertTestResult(testResult: TestResult):Long
 
     @Delete
     suspend fun deleteTestResult(testResult: TestResult)
