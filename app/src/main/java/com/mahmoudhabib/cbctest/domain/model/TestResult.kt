@@ -1,10 +1,8 @@
 package com.mahmoudhabib.cbctest.domain.model
 
-import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlin.random.Random
 
 @Entity(tableName = "testResults")
 data class TestResult(
