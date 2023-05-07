@@ -31,12 +31,13 @@ class AddNewTestViewModel @Inject constructor(
     fun onEvent(event: AddTestEvent) {
         when (event) {
             is AddTestEvent.SetImageUri -> {
-                val bitmap = Utils.getBitmapFromUri(event.uri, application.contentResolver)
-                _addTestState.value = addTestState.value.copy(
-                    selectedBitmap = bitmap,
-                    showImagePreview = event.uri != null
-                )
-
+                event.uri?.let {
+                    val bitmap = Utils.getBitmapFromUri(event.uri, application.contentResolver)
+                    _addTestState.value = addTestState.value.copy(
+                        selectedBitmap = bitmap,
+                        showImagePreview = true
+                    )
+                }
             }
 
             is AddTestEvent.ChangeTitleText -> {
