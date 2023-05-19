@@ -8,11 +8,13 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mahmoudhabib.cbctest.R
 import com.mahmoudhabib.cbctest.presentation.MainActivity
 import com.mahmoudhabib.cbctest.presentation.common.HistoryItem
 import com.mahmoudhabib.cbctest.presentation.common.EmptyListScreen
@@ -28,17 +30,18 @@ fun HomeScreen(
     navigateToTestDetails: (testId: Int) -> Unit,
 ) {
     val homeState = viewModel.homeState.value
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Welcome To CBC",
+                        text = "Welcome To ${context.getString(R.string.app_name)}",
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.primary,
                             fontFamily = quicksandFamily,
                             fontWeight = FontWeight.SemiBold,
-                            fontSize = 24.sp
+                            fontSize = 22.sp
                         ),
                     )
                 },
