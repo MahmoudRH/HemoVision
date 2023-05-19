@@ -1,0 +1,12 @@
+Macrocyte
+Microcyte
+Spherocyte
+Target cell
+Stomatocyte
+Ovalocyte
+Teardrop
+Burr cell
+Schistocyte
+uncategorised
+Hypochromia
+Elliptocyte
