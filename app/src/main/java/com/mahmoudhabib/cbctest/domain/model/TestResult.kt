@@ -14,5 +14,6 @@ data class TestResult(
     @ColumnInfo(name = "date") val date: Long,
     @ColumnInfo(name = "originalImagePath") val originalImagePath: String,
     @ColumnInfo(name = "resultImagePath") val resultImagePath: String,
+    @ColumnInfo(name = "abnormalities") val abnormalities:String =""
 
 )

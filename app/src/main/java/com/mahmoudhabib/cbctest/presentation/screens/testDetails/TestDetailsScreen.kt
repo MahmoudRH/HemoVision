@@ -14,6 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -110,7 +111,7 @@ fun TestDetailsScreen(
                     )
                     TestDetail(title = "Platelets Count: ", value = it.platelets.toString())
 
-
+                    AbnormalitiesSection(type = it.abnormalities)
 
                     Divider(
                         Modifier
@@ -216,6 +217,44 @@ private fun DateDetail(
     }
 }
 
+
+@Composable
+fun AbnormalitiesSection(
+    modifier: Modifier = Modifier,
+    type: String,
+    style: TextStyle = TextStyle(
+        fontFamily = quicksandFamily,
+        color = MaterialTheme.colorScheme.onBackground,
+        fontSize = 16.sp
+    ),
+) {
+        val color = if (type.isNotEmpty()) Color(0xFFFF5900) else Color(0xFF2CA815)
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+                .border(
+                    0.65.dp,
+                    shape = RoundedCornerShape(8.dp),
+                    color = color
+                )
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (type.isNotEmpty()){
+                Text(text = "Abnormality Detected:  $type", style = style.copy(color = color))
+                Spacer(modifier = Modifier.width(12.dp))
+                Icon(imageVector = Icons.Default.Warning, contentDescription = "warning", tint = color)
+            }else{
+                Text(text = "No Abnormalities Detected", style = style.copy(color = color))
+                Spacer(modifier = Modifier.width(12.dp))
+                Icon(imageVector = Icons.Default.Check, contentDescription = "safe", tint = color)
+            }
+
+        }
+
+
+}
 @Composable
 fun ImageDetail(
     modifier: Modifier = Modifier,
@@ -238,7 +277,7 @@ fun ImageDetail(
         contentDescription = title,
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(vertical = 16.dp, horizontal = 4.dp)
             .aspectRatio(1f)
             .clip(RoundedCornerShape(8.dp))
             .border(
