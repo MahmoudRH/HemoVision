@@ -5,4 +5,6 @@ sealed class TestDetailsEvent {
     object ShowDeleteConfirmationDialog : TestDetailsEvent()
     object DeleteTestDetails : TestDetailsEvent()
     object DismissDeletion : TestDetailsEvent()
+    object ShareTestDetails : TestDetailsEvent()
+    object ClearPdf : TestDetailsEvent()
 }
