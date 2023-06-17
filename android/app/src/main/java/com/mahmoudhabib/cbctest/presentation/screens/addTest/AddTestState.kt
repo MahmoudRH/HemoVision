@@ -8,7 +8,9 @@ data class AddTestState(
     val selectedBitmap: Bitmap? = null,
     val isLoading: Boolean = false,
     val isTitleError: Boolean = false,
-    val titleErrorMessage:String = "",
+    val titleErrorMessage: String = "",
     val shouldNavigateToTestDetails: Boolean = false,
-    val rowId:Int = -1
+    val isCheckingImage: Boolean = true,
+    val isImageValid: Boolean = false,
+    val rowId: Int = -1,
 )

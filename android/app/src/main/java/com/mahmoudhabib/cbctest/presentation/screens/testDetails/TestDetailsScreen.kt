@@ -1,5 +1,6 @@
 package com.mahmoudhabib.cbctest.presentation.screens.testDetails
 
+import android.content.Intent
 import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,7 +15,6 @@ import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -24,7 +24,10 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.mahmoudhabib.cbctest.presentation.common.ConfirmationBox
+import com.mahmoudhabib.cbctest.presentation.common.LoadingScreen
 import com.mahmoudhabib.cbctest.presentation.theme.quicksandFamily
+import com.mahmoudhabib.cbctest.presentation.theme.successColor
+import com.mahmoudhabib.cbctest.presentation.theme.warningColor
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,10 +37,19 @@ fun TestDetailsScreen(
     viewModel: TestDetailsViewModel = hiltViewModel(),
     navigateBack: () -> Unit,
 ) {
-
+    val context = LocalContext.current
     val testDetails = viewModel.testDetails.value
     LaunchedEffect(Unit) {
         viewModel.onEvent(TestDetailsEvent.LoadTestDetails)
+    }
+    if(viewModel.isPdfFileCreated.value && !viewModel.isCreatingPdfFile.value){
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "application/pdf"
+        shareIntent.putExtra(Intent.EXTRA_STREAM, viewModel.pdfFileUri.value)
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        context.startActivity(Intent.createChooser(shareIntent, "Share PDF"))
+        viewModel.onEvent(TestDetailsEvent.ClearPdf)
     }
 
     LazyColumn(
@@ -63,7 +75,7 @@ fun TestDetailsScreen(
                 ), actions = {
                     Row(
                         modifier = Modifier
-                            .padding(end = 6.dp)
+                            .padding(end = 12.dp)
                             .clip(RoundedCornerShape(6.dp))
                             .clickable {
                                 viewModel.onEvent(TestDetailsEvent.ShowDeleteConfirmationDialog)
@@ -74,6 +86,20 @@ fun TestDetailsScreen(
                         Icon(imageVector = Icons.Default.Delete, contentDescription = null)
                         Spacer(modifier = Modifier.width(2.dp))
                         Text(text = "Delete", fontFamily = quicksandFamily)
+                    }
+                    Row(
+                        modifier = Modifier
+                            .padding(end = 6.dp)
+                            .clip(RoundedCornerShape(6.dp))
+                            .clickable {
+                                viewModel.onEvent(TestDetailsEvent.ShareTestDetails)
+                            }
+                            .padding(vertical = 5.dp, horizontal = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(imageVector = Icons.Default.Share, contentDescription = null)
+                        Spacer(modifier = Modifier.width(2.dp))
+                        Text(text = "Share", fontFamily = quicksandFamily)
                     }
                 }
             )
@@ -154,6 +180,7 @@ fun TestDetailsScreen(
             if (viewModel.isDeleteSuccess.value) navigateBack()
         },
         onDismiss = { viewModel.onEvent(TestDetailsEvent.DismissDeletion) })
+    LoadingScreen(visibility = viewModel.isCreatingPdfFile.value)
 }
 
 @Composable
@@ -228,7 +255,7 @@ fun AbnormalitiesSection(
         fontSize = 16.sp
     ),
 ) {
-        val color = if (type.isNotEmpty()) Color(0xFFFF5900) else Color(0xFF2CA815)
+        val color = if (type.isNotEmpty()) warningColor else successColor
         Row(
             modifier = modifier
                 .fillMaxWidth()
