@@ -15,3 +15,6 @@ val primaryDark = Color(0xFF70CDD4)
 val primaryContainerDark = Color(0xFF004A4F)
 val tertiaryDark = Color(0xFF849899)
 
+val warningColor = Color(0xFFFF5900)
+val successColor = Color(0xFF2CA815)
+

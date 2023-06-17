@@ -25,6 +25,8 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.mahmoudhabib.cbctest.presentation.common.ConfirmationBox
 import com.mahmoudhabib.cbctest.presentation.theme.quicksandFamily
+import com.mahmoudhabib.cbctest.presentation.theme.successColor
+import com.mahmoudhabib.cbctest.presentation.theme.warningColor
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -228,7 +230,7 @@ fun AbnormalitiesSection(
         fontSize = 16.sp
     ),
 ) {
-        val color = if (type.isNotEmpty()) Color(0xFFFF5900) else Color(0xFF2CA815)
+        val color = if (type.isNotEmpty()) warningColor else successColor
         Row(
             modifier = modifier
                 .fillMaxWidth()

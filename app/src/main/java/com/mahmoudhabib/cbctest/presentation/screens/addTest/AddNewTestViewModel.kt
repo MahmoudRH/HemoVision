@@ -35,11 +35,21 @@ class AddNewTestViewModel @Inject constructor(
         when (event) {
             is AddTestEvent.SetImageUri -> {
                 event.uri?.let {
-                    val bitmap = Utils.getBitmapFromUri(event.uri, application.contentResolver)
-                    _addTestState.value = addTestState.value.copy(
-                        selectedBitmap = bitmap,
-                        showImagePreview = true
-                    )
+                    Utils.getBitmapFromUri(event.uri, application.contentResolver)?.let { bitmap ->
+                        _addTestState.value = addTestState.value.copy(
+                            selectedBitmap = bitmap,
+                            showImagePreview = true,
+                            isCheckingImage = true,
+                        )
+                        //check the image
+                        viewModelScope.launch {
+                            val isImageValid = checkTheImage(bitmap)
+                            _addTestState.value = addTestState.value.copy(
+                                isImageValid = isImageValid,
+                                isCheckingImage = false,
+                            )
+                        }
+                    }
                 }
             }
 
@@ -69,8 +79,8 @@ class AddNewTestViewModel @Inject constructor(
                     if (title.isNotEmpty()) {
                         _addTestState.value =
                             addTestState.value.copy(isTitleError = false, titleErrorMessage = "")
-                        //-> Step 0: Check if the user has provided a bitmap or not.
-                        if (selectedBitmap != null) {
+                        //-> Step 0: Check if the user has provided a valid bitmap.
+                        if (selectedBitmap != null && _addTestState.value.isImageValid) {
                             withContext(Dispatchers.IO) {
 
                                 _addTestState.value =
@@ -197,6 +207,11 @@ class AddNewTestViewModel @Inject constructor(
         return bitmapResult to modelResults
     }
 
+    private suspend fun checkTheImage(bitmap: Bitmap): Boolean {
+        return withContext(Dispatchers.IO) {
+            runYoloModel(CBC_MODEL_PATH, CBC_MODEL_LABELS_FILE_PATH, bitmap).second.size >= 15
+        }
+    }
 
     private companion object {
         const val CBC_MODEL_PATH = "cbc-model.tflite"

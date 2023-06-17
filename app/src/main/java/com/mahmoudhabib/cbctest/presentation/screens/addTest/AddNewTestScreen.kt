@@ -19,11 +19,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,6 +33,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.mahmoudhabib.cbctest.presentation.common.LoadingScreen
 import com.mahmoudhabib.cbctest.presentation.theme.quicksandFamily
+import com.mahmoudhabib.cbctest.presentation.theme.successColor
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -115,6 +118,17 @@ fun AddNewTestScreen(
             }
 
             item {
+                val color = when {
+                    screenState.isCheckingImage -> MaterialTheme.colorScheme.onSurface
+                    screenState.isImageValid -> successColor
+                    else -> MaterialTheme.colorScheme.error
+                }
+
+                val imageStatus = when {
+                    screenState.isCheckingImage -> "Checking The Image.."
+                    screenState.isImageValid -> "Image is valid!"
+                    else -> "Image is not valid!"
+                }
                 AnimatedVisibility(visible = screenState.showImagePreview) {
                     Column {
                         Image(
@@ -133,23 +147,33 @@ fun AddNewTestScreen(
                                 .border(
                                     0.65.dp,
                                     shape = RoundedCornerShape(8.dp),
-                                    color = MaterialTheme.colorScheme.onSurface
+                                    color = color
                                 ),
                             contentScale = ContentScale.Fit
                         )
 
+                        Text(
+                            text = imageStatus,
+                            fontFamily = quicksandFamily,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp, horizontal = 16.dp),
+                            textAlign = TextAlign.Center,
+                            color = color,
+                        )
+//                        AnimatedVisibility(visible = screenState.isImageValid && !screenState.isCheckingImage) {
                         Button(
                             modifier = Modifier
                                 .padding(16.dp)
                                 .align(Alignment.End),
+                            enabled = screenState.isImageValid && !screenState.isCheckingImage,
                             onClick = {
-
                                 viewModel.onEvent(AddTestEvent.ProcessImage())
-
                             },
                         ) {
                             Text(text = "Go", fontFamily = quicksandFamily, fontSize = 16.sp)
                         }
+//                        }
                     }
                 }
             }
@@ -158,8 +182,8 @@ fun AddNewTestScreen(
 
     }
 
-    LaunchedEffect(screenState.rowId){
-        if (screenState.rowId>0) {
+    LaunchedEffect(screenState.rowId) {
+        if (screenState.rowId > 0) {
             navigateToTestDetails(screenState.rowId)
         }
     }
